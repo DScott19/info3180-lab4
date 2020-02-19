@@ -35,7 +35,7 @@ def upload():
         abort(401)
 
     # Instantiate your form class
-        uploadForm = UploadForm()
+    uploadForm = UploadForm()
 
     # Validate file upload on submit
     if request.method == 'POST' and uploadForm.validate_on_submit:
