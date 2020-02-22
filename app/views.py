@@ -70,6 +70,29 @@ def logout():
     flash('You were logged out', 'success')
     return redirect(url_for('home'))
 
+@app.route('/files')
+def files():
+    if not session.get('logged_in'):
+        abort(401)
+    image_list=get_uploaded_images();
+    render_template('files.html',image_list=image_list)
+
+##def get_uploaded_images():
+##    rootdir = os.getcwd()
+##    print (rootdir)
+##    for subdir, dirs, files in os.walk(rootdir + '/static/uploads'):
+##       return [os.path.join(subdir, file) for file in files]
+
+def get_uploaded_images():
+	rootdir = os.getcwd()
+	print (rootdir)
+	for subdir, dirs, files in os.walk(rootdir + '/static/uploads'):
+		list=[];
+		for file in files:
+			dpath=os.path.join(subdir, file)
+			path=os.path.basename(dpath)
+			list+=[path]
+	return list
 
 ###
 # The functions below should be applicable to all Flask apps.
