@@ -38,7 +38,7 @@ def upload():
     uploadForm = UploadForm()
 
     # Validate file upload on submit
-    if request.method == 'POST' and uploadForm.validate_on_submit:
+    if request.method == 'POST' and uploadForm.validate_on_submit():
         # Get file data and save to your uploads folder
         photo=uploadForm.photo.data
         filename=secure_filename(photo.filename)
@@ -75,23 +75,20 @@ def files():
     if not session.get('logged_in'):
         abort(401)
     image_list=get_uploaded_images();
-    render_template('files.html',image_list=image_list)
+    return render_template('files.html',image_list=image_list)
 
-##def get_uploaded_images():
-##    rootdir = os.getcwd()
-##    print (rootdir)
-##    for subdir, dirs, files in os.walk(rootdir + '/static/uploads'):
-##       return [os.path.join(subdir, file) for file in files]
+
 
 def get_uploaded_images():
 	rootdir = os.getcwd()
 	print (rootdir)
-	for subdir, dirs, files in os.walk(rootdir + '/static/uploads'):
-		list=[];
+	list=[]
+	for subdir, dirs, files in os.walk(rootdir + '/app/static/uploads'):
 		for file in files:
-			dpath=os.path.join(subdir, file)
-			path=os.path.basename(dpath)
-			list+=[path]
+                    if file!=".gitkeep":
+                        imagepath=os.path.join(subdir, file)
+                        path=os.path.basename(imagepath)
+                        list+=[path]
 	return list
 
 ###
